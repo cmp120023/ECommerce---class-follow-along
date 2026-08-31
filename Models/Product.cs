@@ -21,6 +21,7 @@ namespace Ecommerce.Models
         /// current5 sales price of product
         /// </summary>
         [Range(0,10_000)]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
     }
 }

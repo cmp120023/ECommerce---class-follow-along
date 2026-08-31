@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Data;
 using Ecommerce.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Controllers
@@ -13,9 +14,10 @@ namespace Ecommerce.Controllers
         {
             _context = context;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            List<Product> allProducts = await _context.Products.ToListAsync();
+            return View(allProducts);
         }
 
 
@@ -31,7 +33,9 @@ namespace Ecommerce.Controllers
             if (ModelState.IsValid)
             {
                 _context.Products.Add(p);
-                await _context.SaveChangesAsync(); 
+                await _context.SaveChangesAsync();
+
+                TempData["Message"] = $"{p.Title} was created successfully"; 
 
                 return RedirectToAction(nameof(Index));
             }

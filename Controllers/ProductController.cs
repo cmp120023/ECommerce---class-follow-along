@@ -68,14 +68,14 @@ namespace Ecommerce.Controllers
             return View(product);
         }
 
-
-        public IActionResult Delete(int id)
+        [HttpGet]
+        public async Task<IActionResult> Delete(int id)
         {
             if(id <= 0)
             {
                 return BadRequest();
             }
-            Product? product = _context.Products.Where(p => p.ProductId == id).FirstOrDefault();
+            Product? product = await _context.Products.FindAsync(id);
 
             if(product == null)
             {
@@ -88,7 +88,7 @@ namespace Ecommerce.Controllers
         [HttpPost]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            Product? product = await _context.Products.FindAsync(id);
+            Product? product =await _context.Products.FindAsync(id);
 
             if(product == null)
             {

@@ -1,5 +1,6 @@
 ﻿using Ecommerce.Data;
 using Ecommerce.Models;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Controllers
@@ -40,6 +41,27 @@ namespace Ecommerce.Controllers
         public IActionResult Login()
         {
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginViewModel login)
+        {
+            if (ModelState.IsValid)
+            {
+                Member? loggedInMember = await _context.Members
+                    .Where(m => (m.Username == login.UsernameOrEmail || m.Email == login.UsernameOrEmail)
+                    && m.Password == login.Password)
+                    .SingleOrDefaultAsync();
+
+                if(loggedInMember == null)
+                {
+                    ModelState.AddModelError(string.Empty, "incorrect email or password");
+                    return View(login);
+                }
+
+                return RedirectToAction("Index", "Home");
+            }
+            return View(login);
         }
     }
 }

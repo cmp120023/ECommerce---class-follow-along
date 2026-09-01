@@ -59,9 +59,18 @@ namespace Ecommerce.Controllers
                     return View(login);
                 }
 
+                HttpContext.Session.SetString("Username", loggedInMember.Username);
+                HttpContext.Session.SetInt32("Id", loggedInMember.MemberId);
+
                 return RedirectToAction("Index", "Home");
             }
             return View(login);
+        }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

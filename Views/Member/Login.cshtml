@@ -1,28 +1,62 @@
 ﻿@model LoginViewModel
+
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = "Log In";
 }
 
-<h1>Log in to the website</h1>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            @* This is a card container that lifts the login box off the background using visual shadows *@
+            <div class="card shadow border-0 auth-card">
+                <div class="card-body p-4 p-md-5">
 
-<form>
-    <div class="text-danger" asp-validation-summary="All" ></div>
-    <div class="mb-3">
-        <label class="form-label" asp-for="UsernameOrEmail"></label>
-        <input class="form-control" placeholder="Username or Email" asp-for="UsernameOrEmail" />
-        <span class="text-danger" asp-validation-for ="UsernameOrEmail"></span>
+                    <h2 class="text-center mb-4 fw-bold text-primary auth-title">Welcome Back</h2>
+                    <p class="text-center text-muted mb-4">Please enter your account details to log in.</p>
+
+                    @* The post method tells the website to securely send the form data to our Controller background code *@
+                    <form method="post">
+                        
+                        @* This summary box acts as a general bulletin board to print errors like "incorrect email or password" *@
+                        <div asp-validation-summary="ModelOnly" class="text-danger small mb-3 fw-bold"></div>
+
+                        @* Username/Email Input Container *@
+                        <div class="mb-3">
+                            @* This reads the field title automatically from our model layout blueprint *@
+                            <label asp-for="UsernameOrEmail" class="form-label fw-semibold"></label>
+                            <input asp-for="UsernameOrEmail" class="form-control" placeholder="Username or Email" />
+                            @* This span is an invisible placeholder that instantly lights up red if the field is left blank *@
+                            <span asp-validation-for="UsernameOrEmail" class="text-danger small d-block mt-1"></span>
+                        </div>
+
+                        @* Password Input Container *@
+                        <div class="mb-4">
+                            <label asp-for="Password" class="form-label fw-semibold"></label>
+                            @* type="password" makes sure the web browser prints masking dots instead of raw text characters *@
+                            <input asp-for="Password" class="form-control" type="password" placeholder="Password" />
+                            <span asp-validation-for="Password" class="text-danger small d-block mt-1"></span>
+                        </div>
+
+                        @* Submit Button: This launches the data up to the server processing cycle when clicked *@
+                        <div class="d-grid mb-3">
+                            <button type="submit" class="btn btn-primary btn-lg fw-bold shadow-sm">Log In</button>
+                        </div>
+
+                        @* Navigation link helper to jump straight back to the sign-up page layout template *@
+                        <div class="text-center mt-3">
+                            <span class="text-muted small">Don't have an account yet? </span>
+                            <a asp-action="Register" class="small text-decoration-none fw-semibold">Sign up</a>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="mb-3">
-        <label class="form-label" asp-for="Password"></label>
-        <input class="form-control" asp-for="Password" />
-        <span lass="text-danger" asp-validation-for="Password"></span>
-    </div>
+</div>
 
-    <input class="btn btn-primary" type="submit" value="Login" />
-
-</form>
+@* This section injects validation utility scripts right before the closing body layout tag *@
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    @* This partial tag pulls in external jQuery validation engines so errors display instantly without reloading the page *@
+    <partial name="_ValidationScriptsPartial" />
 }

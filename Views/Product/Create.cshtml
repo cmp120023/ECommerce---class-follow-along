@@ -1,25 +1,40 @@
-﻿@model Product
+﻿@* This line tells the page to look at our core Product model so it knows what fields are required *@
+@model Product
 @{
     ViewData["Title"] = "Create new Product";
 }
 
 <h2>Create new Product</h2>
+
+@* The post method tells the form to securely bundle up the fields and send them back to the Product Controller *@
 <form method="post">
+
+    @* Product Title Form Field Container *@
     <div>
+        @* Automatically prints the word "Title" using the property configuration rules *@
         <label asp-for="Title" class="form-label"></label>
         <input asp-for="Title" class="form-control" />
-        <span asp-validation-for="Title" class="test-danger"></span>
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
+
+    @* Product Price Form Field Container *@
     <div>
-        <label asp-for="Price" class="form-check-label"></label>
+        <label asp-for="Price" class="form-label"></label>
         <input asp-for="Price" class="form-control" />
+        @* Instantly alerts the user if they input invalid numbers or text symbols here instead of currency values *@
         <span asp-validation-for="Price" class="text-danger"></span>
     </div>
+
+    @* Form Submission Trigger Button *@
     <div>
         <input type="submit" value="Create" class="btn btn-primary" />
     </div>
 </form>
 
-@section Scripts{
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@* This section injects browser data-checking scripts into the footer placeholder area *@
+@section Scripts {
+    @{
+        @* Pulls in background validation engines to check inputs instantly inside the user's browser without reloading *@
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

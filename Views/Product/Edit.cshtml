@@ -1,39 +1,58 @@
+@* This line targets the existing Product object from the database so we can edit its specific values *@
 @model Ecommerce.Models.Product
 
 @{
-    ViewData["Title"] = $"Edit{Model.Title}";
+    @* Dynamic title handler that appends the specific product name to the browser tab text *@
+    ViewData["Title"] = $"Edit {Model.Title}";
 }
 
 <h1>Edit @Model.Title</h1>
 
-<h4>Product</h4>
+<h4>Product Details</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
+        @* The form targets the HTTP Post Edit action inside the Product Controller when saved *@
         <form asp-action="Edit">
+            @* Central bulletin board to show overarching data model errors to the administrator *@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            @* Without this invisible line, the server won't know WHICH exact row to overwrite in SQL Server! *@
             <input type="hidden" asp-for="ProductId" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
+
+            @* Title Input Container (Updated to modern Bootstrap 5 spacing) *@
+            <div class="mb-3">
+                <label asp-for="Title" class="form-label fw-semibold"></label>
                 <input asp-for="Title" class="form-control" />
+                @* Invisible placeholder that lights up red if the title is deleted or left blank *@
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Price" class="control-label"></label>
+
+            @* Price Input Container (Updated to modern Bootstrap 5 spacing) *@
+            <div class="mb-3">
+                <label asp-for="Price" class="form-label fw-semibold"></label>
                 <input asp-for="Price" class="form-control" />
+                @* Alerts the user instantly if they try to save alphabetical text characters instead of numbers *@
                 <span asp-validation-for="Price" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+
+            @* Form Submission Trigger Button *@
+            <div class="mb-3">
+                <input type="submit" value="Save" class="btn btn-primary shadow-sm" />
             </div>
         </form>
     </div>
 </div>
 
+@* Navigation link helper to return safely back to the main catalog listing table *@
 <div>
     <a asp-action="Index" asp-controller="Product">Back to Product Listings</a>
 </div>
 
+@* This section injects validation utility scripts right before the closing body layout tag *@
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        @* Pulls in background validation engines to check inputs instantly inside the user's browser without reloading *@
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -10,7 +10,19 @@ namespace Ecommerce.Data
 
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Member>()
+                .HasIndex(m => m.Username)
+                .IsUnique();
+
+            modelBuilder.Entity<Member>()
+                 .HasIndex(m => m.Email)
+                 .IsUnique();
+        }
         //tracked entities
         public DbSet<Product> Products { get; set; }
+
+        public DbSet<Member> Members { get; set; }
     }
 }

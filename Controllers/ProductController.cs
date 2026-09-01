@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Ecommerce.Controllers
 {
-    
+
     public class ProductController : Controller
     {
         private readonly ProductDbContext _context;
@@ -35,11 +35,23 @@ namespace Ecommerce.Controllers
                 _context.Products.Add(p);
                 await _context.SaveChangesAsync();
 
-                TempData["Message"] = $"{p.Title} was created successfully"; 
+                TempData["Message"] = $"{p.Title} was created successfully";
 
                 return RedirectToAction(nameof(Index));
             }
             return View(p);
+        }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            Product? product = _context.Products.Where(p => p.ProductId == id).FirstOrDefault();
+
+            if(product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
         }
     }
 }

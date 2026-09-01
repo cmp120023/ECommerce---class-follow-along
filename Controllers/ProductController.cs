@@ -53,5 +53,19 @@ namespace Ecommerce.Controllers
             }
             return View(product);
         }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit(Product product)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Update(product);
+                await _context.SaveChangesAsync();
+
+                TempData["Message"] = $"{product.Title} was updated successfully";
+                return RedirectToAction(nameof(Index));
+            }
+            return View(product);
+        }
     }
 }

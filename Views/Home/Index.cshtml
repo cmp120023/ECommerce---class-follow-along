@@ -1,10 +1,171 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    var username = Context.Session.GetString("Username");
 }
 
-<div class="text-center">
-    <h1 class="fs-1">Welcome</h1>
+<div class="container my-5">
+
+    <!--
+      <summary>
+        SECTION 1: Premium Hero Banner Section
+        This is the main eye-catching announcement box at the very top of the home page.
+        It uses a dark background gradient to draw attention and dynamically alters its
+        greeting message depending on whether a logged-in user session is detected.
+      </summary>
+    -->
+    <div class="row bg-dark text-white rounded-4 shadow overflow-hidden mb-5 align-items-center position-relative"
+         style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);">
+
+        <!-- Main marketing pitch and call-to-action link buttons -->
+        <div class="col-md-7 p-4 p-md-5 z-1">
+            <span class="badge bg-primary text-uppercase tracking-wider mb-3 px-3 py-2 rounded-pill fw-bold text-white shadow-sm"
+                  style="font-size: 0.75rem; letter-spacing: 1px;">
+                Premium Experience
+            </span>
+
+            @* If-Else Block: Displays a personalized welcome message if logged in, otherwise shows a general slogan *@
+            @if (!string.IsNullOrEmpty(username))
+            {
+                <h1 class="display-3 fw-extrabold text-white mb-3">Welcome back, @username!</h1>
+            }
+            else
+            {
+                <h1 class="display-4 fw-extrabold text-white mb-3">Discover the Ultimate Gaming Equipment</h1>
+            }
+
+            <p class="lead text-secondary mb-4 opacity-75">
+                Explore a secure, hyper-fast digital marketplace curated with top-tier products, seamless checkout workflows, and instant live inventory tracking. Built for passion, designed for performance.
+            </p>
+
+            <div class="d-flex flex-wrap gap-3">
+                <a asp-controller="Product" asp-action="Index" class="btn btn-primary btn-lg px-4 fw-bold rounded-3 shadow hover-lift">
+                    Browse Catalog
+                </a>
+                <a asp-action="Privacy" class="btn btn-outline-light btn-lg px-4 fw-semibold rounded-3 opacity-90">
+                    Learn More
+                </a>
+            </div>
+        </div>
+
+        <!-- Decorative visual placeholder box to fill empty white space on desktop monitors -->
+        <div class="col-md-5 d-none d-md-block text-center position-relative py-5">
+            <div class="p-5 bg-white bg-opacity-10 shadow rounded-circle d-inline-block border border-white border-opacity-10 align-middle">
+                <span class="display-1 filter-drop-shadow">🎱</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Subheading block introducing our store features section -->
+    <div class="text-center text-md-start mb-4">
+        <h3 class="fw-extrabold text-dark mb-1">Why Shop With Us?</h3>
+        <p class="text-muted small">Engineered using modern web frameworks to ensure reliability and speed.</p>
+    </div>
+
+    <!--
+      <summary>
+        SECTION 2: Marketplace Benefits Metrics Grid
+        A three-column grid layout built with clean cards. Each card acts as an informational
+        block spotlighting a distinct feature (Performance, Security, and Management).
+        Features colored top-borders to separate them visually.
+      </summary>
+    -->
+    <div class="row g-4 mb-5">
+        <!-- Feature 1: Performance/Speed -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 hover-card-action border-top border-primary border-4">
+                <div class="mb-3 text-primary fs-2">⚡</div>
+                <h5 class="fw-bold text-dark mb-2">Blazing Fast Ordering</h5>
+                <p class="text-muted small mb-0">
+                    Our asynchronous database operations powered by Entity Framework Core 10 ensure your checkout process completes safely and instantly without blocking lag spikes.
+                </p>
+            </div>
+        </div>
+
+        <!-- Feature 2: Security/Encryption -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 hover-card-action border-top border-success border-4">
+                <div class="mb-3 text-success fs-2">🛡️</div>
+                <h5 class="fw-bold text-dark mb-2">Secure Identity Profiles</h5>
+                <p class="text-muted small mb-0">
+                    Your account data variables are safely protected with robust regular expressions, strict server-side model state annotations, and memory-encrypted session cookies.
+                </p>
+            </div>
+        </div>
+
+        <!-- Feature 3: Data Integrity/Relational Management -->
+        <div class="col-md-4">
+            <div class="card h-100 border-0 shadow-sm p-4 bg-white rounded-4 hover-card-action border-top border-warning border-4">
+                <div class="mb-3 text-warning fs-2">📦</div>
+                <h5 class="fw-bold text-dark mb-2">Live Catalog Tracking</h5>
+                <p class="text-muted small mb-0">
+                    Instantly monitor live system listings, update complex transactional pricing metadata grids, and execute queries across our relational layers cleanly.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!--
+      <summary>
+        SECTION 3: Featured Dynamic Category Callout Banners
+        A split 50/50 two-column layout highlighting key product inventories (Billiard Cues & Accessories).
+        Uses contextual backgrounds (Blue and Green) to encourage user interaction and browsing click paths.
+      </summary>
+    -->
+    <div class="row g-4">
+        <!-- Collection Banner Left: Billiard Cues -->
+        <div class="col-md-6">
+            <div class="p-4 p-md-5 bg-primary-subtle text-primary rounded-4 h-100 d-flex flex-column justify-content-between shadow-sm border border-primary-subtle">
+                <div>
+                    <h4 class="fw-extrabold mb-2">Premium Billiard Cues</h4>
+                    <p class="text-primary-emphasis opacity-75 mb-4">Crafted for professionals who demand exact weight distributions and clean striking velocity vectors.</p>
+                </div>
+                <div>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-sm btn-primary fw-bold px-3 rounded-2 shadow-sm">Explore Collection &rarr;</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Collection Banner Right: Accessories -->
+        <div class="col-md-6">
+            <div class="p-4 p-md-5 bg-success-subtle text-success rounded-4 h-100 d-flex flex-column justify-content-between shadow-sm border border-success-subtle">
+                <div>
+                    <h4 class="fw-extrabold mb-2">Tournament Accessories</h4>
+                    <p class="text-success-emphasis opacity-75 mb-4">From high-grade chalk matrices to calibrated weight sets, discover tools designed to polish your match skills.</p>
+                </div>
+                <div>
+                    <a asp-controller="Product" asp-action="Index" class="btn btn-sm btn-success fw-bold px-3 rounded-2 shadow-sm">Shop Accessories &rarr;</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
-<div class="alert alert-warning alert-dismissible fade show" role="alert">
-    Contruction
-</div>
+
+<!--
+  <summary>
+    EMBEDDED STYLE VARIABLES
+    Houses the isolated graphical transition parameters for layout animations.
+    Creates smooth hover lifts and shadows when hovering over buttons or cards.
+  </summary>
+-->
+<style>
+    /* Controls the smooth hover animation lift for action buttons */
+    .hover-lift {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .hover-lift:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+        }
+
+    /* Controls the smooth bounce lift for information blocks */
+    .hover-card-action {
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+        .hover-card-action:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 0.75rem 1.5rem rgba(15, 23, 42, 0.08) !important;
+        }
+</style>

@@ -1,53 +1,84 @@
-﻿@model IEnumerable<Product>
+﻿@* This line accepts a list (collection) of multiple Products sent from our Product Controller background code *@
+@model IEnumerable<Product>
 @{
     ViewData["Title"] = "Products Listings";
-
 }
 
-<h2>Product Listing</h2>
-<a asp-action="Create" asp-controller="Product" class="btn btn-secondary">Create Product</a>
-
-@if(TempData["Message"] != null)
-{
-    <div class="alert alert-success alert-dismissible fade show" role="alert">
-        @TempData["Message"]
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class="container my-4">
+    @* Page Header and Create Button Layout Grid *@
+    <div class="row align-items-center mb-4">
+        <div class="col">
+            <h2 class="mb-0 fw-bold">Product Listing</h2>
+        </div>
+        <div class="col-auto">
+            @* A shortcut navigation link button that takes administrators straight to the item creation form *@
+            <a asp-action="Create" asp-controller="Product" class="btn btn-secondary shadow-sm">
+                <i class="bi bi-plus-circleme me-1"></i> Create Product
+            </a>
+        </div>
     </div>
-}
 
-@if(Model.Count() == 0)
-{
-    <p>No products are currently found</p>
-}
-else
-{
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>@Html.DisplayNameFor(m => m.Title)</th>
-                <th>@Html.DisplayNameFor(m => m.Price)</th>
-                <th>Links</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var product in Model)
-            {
-                <tr>
-                    <td>@product.Title</td>
-                    <td>@product.Price</td>
-                    <td>
-                        <a class="btn btn-primary" asp-controller="Product" 
-                        asp-action="Edit" asp-route-id="@product.ProductId">Update </a>
-                        
-                        <a class="btn btn-danger" asp-controller="Product"
-                        asp-action="Delete"
-                        asp-route-id="@product.ProductId">Delete</a>
-                     </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    @* Dynamic Feedback Banner: This area stays invisible unless a flash notification message is present *@
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+            @* Prints confirmation text like "Billiard Ball was created successfully" *@
+            <span class="fw-semibold">@TempData["Message"]</span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
 
-
-}
-
+    @* Empty State Handler: If our database collection has 0 items, print a clean placeholder box *@
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5 border rounded bg-light">
+            <p class="text-muted mb-0 fs-5">No products are currently found.</p>
+        </div>
+    }
+    else
+    {
+        @* Data Output Grid: If items exist in the database, wrap them inside a responsive table *@
+        <div class="card shadow-sm border-0">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover align-middle mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            @* Automatically extracts column heading labels directly from your data properties *@
+                            <th class="ps-3">@Html.DisplayNameFor(m => m.First().Title)</th>
+                            <th>@Html.DisplayNameFor(m => m.First().Price)</th>
+                            <th class="text-end pe-3">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @* Loop: This runs repeatedly for every individual product row entry stored in the database table *@
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                @* Dynamic item text name column value *@
+                                <td class="fw-semibold ps-3">@product.Title</td>
+                                @* .ToString("C") forces numerical currency layout formatting (adds regional symbols like $) *@
+                                <td>@product.Price.ToString("C")</td>
+                                <td class="text-end pe-3">
+                                    @* Action link helper that passes this item's unique Primary Key ID number into the Edit form URL *@
+                                    <a class="btn btn-sm btn-primary me-1 shadow-sm"
+                                       asp-controller="Product"
+                                       asp-action="Edit"
+                                       asp-route-id="@product.ProductId">
+                                        Update
+                                    </a>
+                                    @* Action link helper that forwards this item's unique Primary Key ID number into the Delete screen URL *@
+                                    <a class="btn btn-sm btn-danger shadow-sm"
+                                       asp-controller="Product"
+                                       asp-action="Delete"
+                                       asp-route-id="@product.ProductId">
+                                        Delete
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+</div>
